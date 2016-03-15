@@ -40,7 +40,11 @@ public final class DirectedGraph<T> implements Iterable<T> {
         userGraph.get(startNode).add(endNode);
     }
 
-
+    
+    /*
+     * removeEdge method allows users to remove an edge from the graph..
+     */
+    
     public void removeEdge(T startNode, T endNode) {
         if (!userGraph.containsKey(startNode) || !userGraph.containsKey(endNode))
             throw new NoSuchElementException("ONE OF THE NODES YOU SELECTED DOES NOT EXIST IN THE USER GRAPH");
@@ -48,14 +52,13 @@ public final class DirectedGraph<T> implements Iterable<T> {
         userGraph.get(startNode).remove(endNode);
     }
 
-    public boolean edgeExists(T startNode, T endNode) {
-        if (!userGraph.containsKey(startNode) || !userGraph.containsKey(endNode))
-            throw new NoSuchElementException("ONE OF THE NODES YOU SELECTED DOES NOT EXIST IN THE USER GRAPH.");
-
-        return userGraph.get(startNode).contains(endNode);
-    }
-
-    public Set<T> edgesFrom(T node) {
+    
+    /*
+     * Allows the user to check to see what edges they've added to a given node so they
+     * don't keep trying to addEdge().
+     * 
+     */
+    public Set<T> connectedNodes(T node) {
         Set<T> arcs = userGraph.get(node);
         if (arcs == null)
             throw new NoSuchElementException("NO SOURCE NODE");
@@ -68,6 +71,8 @@ public final class DirectedGraph<T> implements Iterable<T> {
         return userGraph.keySet().iterator();
     }
 
+    
+    //check to see if graph is empty
     public boolean isEmpty() {
         return userGraph.isEmpty();
     }

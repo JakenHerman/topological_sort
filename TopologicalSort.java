@@ -23,7 +23,7 @@ public final class TopologicalSort {
             result.addNode(node);
 
         for (T node:userGraph)
-            for (T endpoint:userGraph.edgesFrom(node))
+            for (T endpoint:userGraph.connectedNodes(node))
                 result.addEdge(endpoint, node);
 
         return result;
@@ -41,7 +41,7 @@ public final class TopologicalSort {
         
         visited.add(node);
 
-        for (T predecessor:userGraph.edgesFrom(node))
+        for (T predecessor:userGraph.connectedNodes(node))
             explore(predecessor,userGraph, ordering, visited, expanded);
 
         ordering.add(node);
