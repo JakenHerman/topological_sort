@@ -1,58 +1,74 @@
-
-import java.util.*; // For HashMap, HashSet
+import java.util.*;
 
 public final class DirectedGraph<T> implements Iterable<T> {
 
-    private final Map<T, Set<T>> mGraph = new HashMap<T, Set<T>>();
+    private final Map<T, Set<T>> userGraph = new HashMap<T, Set<T>>();
 
+ /*
+ * 
+ * addNode method allows users to add a node of generic type
+ * T into the Directed Graph.The method will check to see if
+ * the node already exists. If the node already exists in the 
+ * graph, this input will be ignored. 
+ * 
+ */  
+    
+    
     public boolean addNode(T node) {
-        if (mGraph.containsKey(node))
+        if (userGraph.containsKey(node))
             return false;
 
-        mGraph.put(node, new HashSet<T>());
+        userGraph.put(node, new HashSet<T>());
         return true;
     }
+    
+    
+/*
+ * 
+ * addEdge method allows users to add an edge in the graph from 
+ * one node to another as specified by the user. The first node
+ * that is called in the method of generic type T will be the 
+ * predecessor of the following node called in the method, also
+ * of generic type T.
+ * 
+ */
+    
+    public void addEdge(T startNode, T endNode) {
+        if (!userGraph.containsKey(startNode) || !userGraph.containsKey(endNode))
+            throw new NoSuchElementException("ONE OF THE NODES YOU SELECTED DOES NOT EXIST IN THE USER GRAPH");
 
-    public void addEdge(T start, T dest) {
-        if (!mGraph.containsKey(start) || !mGraph.containsKey(dest))
-            throw new NoSuchElementException("Both nodes must be in the graph.");
-
-        mGraph.get(start).add(dest);
+        userGraph.get(startNode).add(endNode);
     }
 
 
-    public void removeEdge(T start, T dest) {
-        if (!mGraph.containsKey(start) || !mGraph.containsKey(dest))
-            throw new NoSuchElementException("Both nodes must be in the graph.");
+    public void removeEdge(T startNode, T endNode) {
+        if (!userGraph.containsKey(startNode) || !userGraph.containsKey(endNode))
+            throw new NoSuchElementException("ONE OF THE NODES YOU SELECTED DOES NOT EXIST IN THE USER GRAPH");
 
-        mGraph.get(start).remove(dest);
+        userGraph.get(startNode).remove(endNode);
     }
 
-    public boolean edgeExists(T start, T end) {
-        if (!mGraph.containsKey(start) || !mGraph.containsKey(end))
-            throw new NoSuchElementException("Both nodes must be in the graph.");
+    public boolean edgeExists(T startNode, T endNode) {
+        if (!userGraph.containsKey(startNode) || !userGraph.containsKey(endNode))
+            throw new NoSuchElementException("ONE OF THE NODES YOU SELECTED DOES NOT EXIST IN THE USER GRAPH.");
 
-        return mGraph.get(start).contains(end);
+        return userGraph.get(startNode).contains(endNode);
     }
 
     public Set<T> edgesFrom(T node) {
-        Set<T> arcs = mGraph.get(node);
+        Set<T> arcs = userGraph.get(node);
         if (arcs == null)
-            throw new NoSuchElementException("Source node does not exist.");
+            throw new NoSuchElementException("NO SOURCE NODE");
 
         return Collections.unmodifiableSet(arcs);
     }
 
 
     public Iterator<T> iterator() {
-        return mGraph.keySet().iterator();
-    }
-
-    public int size() {
-        return mGraph.size();
+        return userGraph.keySet().iterator();
     }
 
     public boolean isEmpty() {
-        return mGraph.isEmpty();
+        return userGraph.isEmpty();
     }
 }

@@ -1,51 +1,54 @@
-import java.util.*; // For List, Map.
+import java.util.*;
 
 public final class TopologicalSort {
-    public static <T> List<T> sort(DirectedGraph<T> g) {
-        DirectedGraph<T> gRev = reverseGraph(g);
+    public static <T> List<T> sort(DirectedGraph<T>userGraph) {
+        DirectedGraph<T> reversed_user_graph = reverseGraph(userGraph);
 
         List<T> result = new ArrayList<T>();
         Set<T> visited = new HashSet<T>();
 
         Set<T> expanded = new HashSet<T>();
 
-        for (T node: gRev)
-            explore(node, gRev, result, visited, expanded);
+        for (T node: reversed_user_graph)
+            explore(node, reversed_user_graph, result, visited, expanded);
 
         return result;
     }
 
-    private static <T> void explore(T node, DirectedGraph<T> g,
+    
+    private static <T> DirectedGraph<T> reverseGraph(DirectedGraph<T>userGraph) {
+        DirectedGraph<T> result = new DirectedGraph<T>();
+
+        for (T node:userGraph)
+            result.addNode(node);
+
+        for (T node:userGraph)
+            for (T endpoint:userGraph.edgesFrom(node))
+                result.addEdge(endpoint, node);
+
+        return result;
+    }
+    
+    private static <T> void explore(T node, DirectedGraph<T>userGraph,
                                     List<T> ordering, Set<T> visited,
                                     Set<T> expanded) {
 
         if (visited.contains(node)) {
  
             if (expanded.contains(node)) return;
-            throw new IllegalArgumentException("Graph contains a cycle.");
+            throw new IllegalArgumentException("THIS GRAPH CONTAINS A CYCLE");
         }
         
         visited.add(node);
 
-        for (T predecessor: g.edgesFrom(node))
-            explore(predecessor, g, ordering, visited, expanded);
+        for (T predecessor:userGraph.edgesFrom(node))
+            explore(predecessor,userGraph, ordering, visited, expanded);
 
         ordering.add(node);
 
         expanded.add(node);
     }
 
-    private static <T> DirectedGraph<T> reverseGraph(DirectedGraph<T> g) {
-        DirectedGraph<T> result = new DirectedGraph<T>();
 
-        for (T node: g)
-            result.addNode(node);
-
-        for (T node: g)
-            for (T endpoint: g.edgesFrom(node))
-                result.addEdge(endpoint, node);
-
-        return result;
-    }
     
 }
